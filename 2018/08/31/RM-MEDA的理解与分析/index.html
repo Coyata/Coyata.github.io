@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Coyata&#39;s blogs">
 <meta property="og:description" content="RM-MEDA的理解与分析RM-MEDA算法是一种基于分布估计（ Estimation of Distribution Algorithms, EDA）的演化算法，用于解决多目标优化问题。该算法于2008年发表于 IEEE Transaction on Evolutionary Computation ，标题为RM-MEDA: A Regularity Model-Based Multiobjec">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-31T10:49:43.186Z">
+<meta property="og:updated_time" content="2018-08-31T11:00:03.560Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RM-MEDA的理解与分析">
 <meta name="twitter:description" content="RM-MEDA的理解与分析RM-MEDA算法是一种基于分布估计（ Estimation of Distribution Algorithms, EDA）的演化算法，用于解决多目标优化问题。该算法于2008年发表于 IEEE Transaction on Evolutionary Computation ，标题为RM-MEDA: A Regularity Model-Based Multiobjec">
@@ -365,14 +365,15 @@
       
         <h1 id="RM-MEDA的理解与分析"><a href="#RM-MEDA的理解与分析" class="headerlink" title="RM-MEDA的理解与分析"></a>RM-MEDA的理解与分析</h1><p>RM-MEDA算法是一种基于分布估计（ Estimation of Distribution Algorithms, EDA）的演化算法，用于解决多目标优化问题。该算法于2008年发表于 <strong><em>IEEE Transaction on Evolutionary Computation</em></strong> ，标题为<strong><em><a href="https://ieeexplore.ieee.org/document/4358761/" target="_blank" rel="noopener">RM-MEDA: A Regularity Model-Based Multiobjective Estimation of Distribution Algorithm</a></em></strong>。</p>
 <p>基于EDA的演化算法的特点在产生新解的方式：先对父代建立分布模型，再在模型中采样产生子代。RM-MEDA算法利用解在PS分布的规律性，即最优解在可行域内的分布为(m-1)维流形，其中m为目标的维数。</p>
+<a id="more"></a>
 <p>在拓扑学中，同胚（homeomorphism）是两个拓扑空间之间的双连续函数。如果两个空间之间存在同胚，那么这两个空间就称为同胚的。如果说拓扑空间是一个几何物体，同胚就是把物体连续延展和弯曲。如果两个流形可以通过弯曲、延展和剪切（最终完全沿着当初剪开的缝隙再重新粘贴起来）等操作把一个转为另外一个，则认为两者是同胚的。[1]</p>
-<p>流形是局部具有欧氏空间性质的拓扑结构，粗略地说，流形上每一个点的附近和欧式空间的一个开集是同胚的，流形正是一块块欧氏空间粘起来的结果，欧氏空间是具有内积的线性空间，因此流形可以被多个线性空间拼接近似。[2]</p>
+<p>流形是局部具有欧氏空间性质的拓扑结构，粗略地说，流形上每一个点的附近和欧氏空间的一个开集是同胚的，流形正是一块块欧氏空间粘起来的结果，欧氏空间是具有内积的线性空间，因此流形可以被多个线性空间拼接近似。[2]</p>
 <p>RM-MEDA算法就是对父代种群组成的形状用多个（m-1）维线性空间进行拟合，再在多个线性空间中进行采样产生子代。</p>
 <p>流形学习可以概括为：在保持流形上点的某些几何性质特征的情况下，找出一组对应的内蕴坐标(intrinsic coordinate)，将流形尽量好的展开在低维平面上，这种低维表示也叫内蕴特征(intrinsic feature)，外围空间的维数叫观察维数，其表示叫自然坐标。</p>
 <p>主成分分析法（Principal Component Analysis，PCA）是目前应用最广泛的线性降维方法，采用线性投影的方法进行数据降维，使数据在给定方向上的投影得到最大的投影方差，当流形是一个线性流形时，PCA得到的结果是最优的，PCA无法有效处理非线性流形上的数据。[3]</p>
 <p>由于RM-MEDA算法将流形用多个线性空间近似，因此对于每个线性空间，使用PCA来进行流形学习。</p>
 <p>RM-MEDA算法采用类似聚类的方法将父代个体分为k类，每类最终形成一个线性空间。因为聚类是为类内线性拟合所准备的，因此聚类中距离不是按照该点到聚类中心的距离，而是按照该点到线性空间距离，该距离是该点到线性空间的垂直距离。聚类过程为首先随机产生K个线性空间，然后对每个父代中的点，计算该店到每个线性空间的距离，距离最近则属于该类，在所有点划分完后对每类使用PCA算法计算新的线性空间，更新线性空间后重复该过程直到分类不再变化。</p>
-<p>在线性拟合完成之后，需要划定每个线性空间的上下界，为采样做准备。划定方法为，在线性空间的每一维度计算该类中个体在该维度的上下界，并上下各延申%25（因为有时父代并不能覆盖整个线性空间），则划定上下界后拼接起来的形状即为对父代分布的拟合。</p>
+<p>在线性拟合完成之后，需要划定每个线性空间的上下界，为采样做准备。划定方法为，在线性空间的每一维度计算该类中个体在该维度的上下界，并上下各延伸%25（因为有时父代并不能覆盖整个线性空间），则划定上下界后拼接起来的形状即为对父代分布的拟合。</p>
 <p>按照各截断的线性空间体积占总体积之比为新解在该截断线性空间的概率。以此概率先选择流形，再在流形上均匀采样并加入噪音即得到一个新解。重复该过程即可得到子代种群。</p>
 <p>[1]“流形”百度百科</p>
 <p>[2]刘宇辉, 曲安京. 流形概念的历史演变[J]. 自然辩证法研究, 2015(5):78-82.</p>
